@@ -1,6 +1,4 @@
 package Default;
-
-
 public class Customer {
 	
     private int    CustomerID;

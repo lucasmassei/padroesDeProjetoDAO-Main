@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 public class CustomerDAO {
 	private Connection conexao;
 	
@@ -16,30 +18,72 @@ public class CustomerDAO {
 	}
 	
 	public void insert (Customer os) {
-		String sql = "insert into customer ( CompanyName, ContactName, ContactTitle, Address, City, Region, PostalCode, Country, Phone, Fax) values (?,?,?,?,?,?,?,?,?,?)";
 
+			String sql = "insert into customer ( CompanyName, ContactName, ContactTitle, Address, City, Region, PostalCode, Country, "
+					+ "Phone, Fax) values (?,?,?,?,?,?,?,?,?,?)";
+	
 		try {
+			
 			PreparedStatement stmt = conexao.prepareStatement(sql);
 			
-			stmt.setString(1, os.getCompanyName());
-			stmt.setString(2, os.getContactName());
-			stmt.setString(3, os.getContactTitle());
-			stmt.setString(4, os.getAddress());
-			stmt.setString(5, os.getCity());
-			stmt.setString(6, os.getRegion());
-			stmt.setString(7, os.getPostalCode());
-			stmt.setString(8, os.getCountry());
-			stmt.setString(9, os.getPhone());
-			stmt.setString(10, os.getFax());
-			
-			
+			stmt.setString(1, JOptionPane.showInputDialog("Digite o Nome do Cliente: "));
+			stmt.setString(2, JOptionPane.showInputDialog("Digite o Local de Trabalho: "));
+			stmt.setString(3, JOptionPane.showInputDialog("Digite o um Nome de Contato: "));
+			stmt.setString(4, JOptionPane.showInputDialog("Digite o Endereco: "));
+			stmt.setString(5, JOptionPane.showInputDialog("Digite a Cidade: "));
+			stmt.setString(6, JOptionPane.showInputDialog("Digite o Bairro: "));
+			stmt.setString(7, JOptionPane.showInputDialog("Digite o CEP: "));
+			stmt.setString(8, JOptionPane.showInputDialog("Digite o Pais: "));
+			stmt.setString(9, JOptionPane.showInputDialog("Digite o Telefone: "));
+			stmt.setString(10, JOptionPane.showInputDialog("Digite o Fax: "));
+					
 			stmt.execute();
 			stmt.close();
+			
 		}
 		catch(SQLException e) {
 			e.getMessage();
 		}
 	}
+
+	public void delete (Customer os) {
+
+			String sql = "delete from customer where CustomerID =  (?)";
+	
+		try {
+			
+			PreparedStatement stmt = conexao.prepareStatement(sql);
+			
+			stmt.setString(1, JOptionPane.showInputDialog("Digite o Código do Cliente que deseja deletar: "));
+			stmt.execute();
+			stmt.close();
+			
+		}
+		catch(SQLException e) {
+			e.getMessage();
+		}
+	}
+
+	public void update (Customer os) {
+
+		String sql = "UPDATE customer SET PostalCode = (?) where CustomerID = (?)";
+		
+
+	try {
+		
+		PreparedStatement stmt = conexao.prepareStatement(sql);
+		
+		stmt.setString(2, JOptionPane.showInputDialog("Digite o ID do Cliente que deseja Alterar o CEP: "));
+		stmt.setString(1, JOptionPane.showInputDialog("Digite o novo CEP do Cliente: "));
+		
+		stmt.execute();
+		stmt.close();
+		
+	}
+	catch(SQLException e) {
+		e.getMessage();
+	}
+}
 	
 	public void selectAll() {
 		String sql = "select * from customer";
@@ -109,7 +153,13 @@ public class CustomerDAO {
 	}
 	
 	public void selectId() {
-		String sql = "select * from customer where CustomerID = 2";
+		String numero;
+		int number;
+		
+		numero = JOptionPane.showInputDialog("Digite o ID do Cliente: ");
+		number = Integer.parseInt(numero);
+		String sql = "select * from customer where CustomerID = " + number;
+		
 		
 		List<Customer> lista = new ArrayList<Customer>();
 		
@@ -240,6 +290,5 @@ public class CustomerDAO {
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-	
+	}	
 }
